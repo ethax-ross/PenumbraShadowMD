@@ -84,7 +84,7 @@ make build
 make upload
 ```
 
-Other sketches build + upload from Arduino IDE.
+Other sketches build + upload from Arduino IDE. The Penumbra Shadow MD sketch can also build from the IDE, but make sure the flash size is set to 16MB.
 
 ## Libraries Used
 
