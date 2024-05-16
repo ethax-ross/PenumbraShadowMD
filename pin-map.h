@@ -33,9 +33,13 @@
 #define SOUND_SERIAL_RX         DIN2_PIN
 
 #define PD_SERIAL_TX            DOUT2_PIN
-#define PD_SERIAL_RX            DIN1_PIN
+#define PD_SERIAL_RX            -1
+
+#define VOICE_SERIAL_RX         DIN1_PIN
+#define VOICE_SERIAL_TX         -1
 
 #define PD_SERIAL               pdSerial
+#define VOICE_SERIAL            voiceSerial
 #define MD_SERIAL               Serial1
 #define MOTOR_SERIAL            motorSerial
 #define BODY_MD_SERIAL          Serial2
@@ -46,6 +50,7 @@
 #define MOTOR_SERIAL_INIT(baud)      MOTOR_SERIAL.begin(baud, SWSERIAL_8N1, MOTOR_SERIAL_RX, MOTOR_SERIAL_TX, false)
 #define SOUND_SERIAL_INIT(baud)      { SOUND_SERIAL.begin(baud, SWSERIAL_8N1, SOUND_SERIAL_RX, SOUND_SERIAL_TX, false); delay(1500); }
 #define PD_SERIAL_INIT(baud)         { PD_SERIAL.begin(baud, SWSERIAL_8N1, PD_SERIAL_RX, PD_SERIAL_TX, false); delay(3000); }
+#define VOICE_SERIAL_INIT(baud)      { VOICE_SERIAL.begin(baud, SWSERIAL_8N1, VOICE_SERIAL_RX, VOICE_SERIAL_TX, false); delay(4500); }
 
 #define SOUND_SERIAL_BAUD       9600
 #define SOUND_DEFAULT_VOLUME    50
@@ -54,3 +59,4 @@
 SoftwareSerial MOTOR_SERIAL;
 SoftwareSerial SOUND_SERIAL;
 SoftwareSerial PD_SERIAL;
+SoftwareSerial VOICE_SERIAL;

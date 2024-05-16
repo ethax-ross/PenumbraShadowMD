@@ -86,7 +86,7 @@ byte drivespeed2 = 110;  //For Speed Setting (Over Throttle): set this for when 
 byte turnspeed = 50;      // the higher this number the faster it will spin in place, lower - the easier to control.
                          // Recommend beginner: 40 to 50, experienced: 50+, I like 75
 
-byte domespeed = 100;    // If using a speed controller for the dome, sets the top speed
+byte domespeed = 90;    // If using a speed controller for the dome, sets the top speed
                          // Use a number up to 127
 
 byte ramping = 1;        // Ramping- the lower this number the longer R2 will take to speedup or slow down,
@@ -99,8 +99,8 @@ byte driveDeadBandRange = 10;     // Used to set the Sabertooth DeadZone for foo
 
 int invertTurnDirection = 1;   //This may need to be set to 1 for some configurations
 
-byte domeAutoSpeed = 70;     // Speed used when dome automation is active - Valid Values: 50 - 100
-int time360DomeTurn = 2500;  // milliseconds for dome to complete 360 turn at domeAutoSpeed - Valid Values: 2000 - 8000 (2000 = 2 seconds)
+byte domeAutoSpeed = 50;     // Speed used when dome automation is active - Valid Values: 50 - 100
+int time360DomeTurn = 6000;  // milliseconds for dome to complete 360 turn at domeAutoSpeed - Valid Values: 2000 - 8000 (2000 = 2 seconds)
 
 // Songs are 1 - 21, but start at 0 (will be incremented on first use)
 int currentSong = 0;
@@ -428,6 +428,8 @@ int marcDuinoBaudRate = 9600; // Set the baud rate for the Syren motor controlle
 
 int pdBaudRate = 9600; // Set the baud rate for the Printed Droid DPL
 
+int voiceBaudRate = 9600; // Set the baud rate for the Voice Nano Sense BLE
+
 #define FOOT_MOTOR_ADDR      128      // Serial Address for Foot Motor
 #define DOME_MOTOR_ADDR      129      // Serial Address for Dome Motor
 
@@ -460,7 +462,9 @@ int pdBaudRate = 9600; // Set the baud rate for the Printed Droid DPL
 
 #define CONSOLE_BUFFER_SIZE     300
 static unsigned sPos;
+static unsigned vPos;
 static char sBuffer[CONSOLE_BUFFER_SIZE];
+static char voiceBuffer[CONSOLE_BUFFER_SIZE];
 
 // ---------------------------------------------------------------------------------------
 //                    Panel Management Variables
@@ -546,7 +550,7 @@ bool mainControllerConnected = false;
 bool domeControllerConnected = false;
 
 // Dome Automation Variables
-bool domeAutomation = false;
+bool domeAutomation = true;
 int domeTurnDirection = 1;  // 1 = positive turn, -1 negative turn
 float domeTargetPosition = 0; // (0 - 359) - degrees in a circle, 0 = home
 unsigned long domeStopTurnTime = 0;    // millis() when next turn should stop
@@ -839,6 +843,10 @@ bool handleMarcduinoAction(const char* action)
           // knight rider music, holo/logics/psi vertical scan line sequence/MP cylon/dome seq/body seq
           handleMarcduinoAction("#88,#89,#90,#91,#92,#93");
         }
+        else if (startswith(cmd, "R2_LISTENING")) {
+          // knight rider effects on LDPL and CSL for 3s
+          sendPrintedDroidCommand("DP1\nCS2", "DP0\nCS0", 3000);        
+        }
         else if (startswith(cmd, "KITT")) {
           // knight rider effects on LDPL and CSL for 17s
           sendPrintedDroidCommand("DP1\nCS2", "DP0\nCS0", 17000);        
@@ -923,6 +931,9 @@ void setup()
 
     // Setup for printed droid serial
     PD_SERIAL_INIT(pdBaudRate);
+
+    // Setup for voice control serial
+    VOICE_SERIAL_INIT(voiceBaudRate);
 
     // randomSeed(analogRead(0));  // random number seed for dome automation   
 
@@ -1189,6 +1200,31 @@ void loop()
     {
         int ch = MD_SERIAL.read();
         Serial.print((char)ch);
+    }
+
+    if (VOICE_SERIAL.available())
+    {
+      Serial.println("VOICE serial available");
+      int ch = VOICE_SERIAL.read();
+      // \r or \n
+      if (ch == 0x0A || ch == 0x0D)
+      {
+        char* cmd = voiceBuffer;
+        Serial.print("VOICE serial command received: ");
+        Serial.println(cmd);
+
+        // Takes commands in the format #<int>,#<int>...
+        // for example: #30,#34,#45
+        // also supports custom commands, such as TOGGLE_DP_CBI and KNIGHT_RIDER
+        handleMarcduinoAction(cmd);
+
+        vPos = 0;
+      }
+      else if (vPos < SizeOfArray(voiceBuffer) - 1)
+      {
+        voiceBuffer[vPos++] = ch;
+        voiceBuffer[vPos] = '\0';
+      }
     }
 }
 
@@ -1999,7 +2035,7 @@ void autoDome()
         if (domeStopTurnTime > millis())
         {
             domeSpeed = domeAutoSpeed * domeTurnDirection;
-            DomeMotor->motor(domeSpeed);
+            DomeMotor->motor(domeSpeed / 2.0);
 
             SHADOW_DEBUG("Turning Now!!\n")
         }
