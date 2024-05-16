@@ -1,5 +1,5 @@
 TARGET?=ESP32
-PORT?=/dev/cu.usbserial-1430
+PORT?=/dev/cu.usbserial-210
 #ESP32_FILESYSTEM=littlefs
 #ESP32_PSRAM=enabled
 ESP32_FILESYSTEM=spiffs

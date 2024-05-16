@@ -1,0 +1,47 @@
+context:
+  expressions:
+    controlPanels:
+      - (@R2) $state:state (the, all) $panel:panel
+    playSequence:
+      - "[@R2, @play] (the) $sequence:sequence (sequence)"
+    useTool:
+      - "@R2 (use, open) $tool:tool"
+  slots:
+    state:
+      - close
+      - open
+    panel:
+      - dome panels
+      - charge bay
+      - data port
+      - body panels
+      - pie panels
+      - panels
+    sequence:
+      - run
+      - the empire are coming
+      - play the message
+      - cantina
+      - marching ants
+      - wiggle
+      - wave
+      - knight rider
+      - scream
+    tool:
+      - gripper tool
+      - interface tool
+      - gripper arm
+      - interface
+      - gripper
+  macros:
+    play:
+      - execute
+      - run
+      - initiate
+      - play
+      - start
+    R2:
+      - hey are too
+      - hey are two
+      - are too
+      - are two
