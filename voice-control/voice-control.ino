@@ -44,7 +44,8 @@ void DEBUG(String message) {
 
 static void wake_word_callback(void) {
     DEBUG("Wake word detected!");
-    MARCDUINO.println("R2_LISTENING\r");
+    // turn on front holo for 'listening'
+    MARCDUINO.println("#96\r");
 }
 
 static void inference_callback(pv_inference_t *inference) {
@@ -111,43 +112,48 @@ static void inference_callback(pv_inference_t *inference) {
     pv_inference_delete(inference);
 }
 
+void send_command(String cmd) {
+  // turn off front holo for 'stop listening' and send command as well
+  MARCDUINO.println("#97," + cmd + "\r");
+}
+
 void play_sequence(const char* sequence) {
   DEBUG("Sequence: " + String(sequence));
 
   if (String(sequence) == "run" || String(sequence) == "scream" || String(sequence) == "the empire are coming") {
-    MARCDUINO.println("#87,#79,#80,#78\r");
+    send_command("#87,#79,#80,#78");
   }
 
   if (strstr(sequence, "stop") != NULL) {
-    MARCDUINO.println("RESET\r");
+    send_command("RESET");
   }
 
   if (strstr(sequence, "message") != NULL) {
-    MARCDUINO.println("#9\r");
+    send_command("#9");
   }
 
   if (String(sequence) == "cantina") {
-    MARCDUINO.println("#10\r");
+    send_command("#10");
   }
 
   if (String(sequence) == "marching ants") {
-    MARCDUINO.println("#19\r");
+    send_command("#19");
   }
 
   if (String(sequence) == "wave" || strstr(sequence, "bye") != NULL) {
-    MARCDUINO.println("#81,MP3=42\r");
+    send_command("#81,MP3=42");
   }
 
   if (String(sequence) == "knight rider" || strstr(sequence, "kitt") != NULL) {
-    MARCDUINO.println("KNIGHT_RIDER\r");
+    send_command("KNIGHT_RIDER");
   }
 
   if (String(sequence) == "disco" || String(sequence) == "party") {
-    MARCDUINO.println("#8\r");
+    send_command("#8");
   }
 
   if (String(sequence) == "smirk") {
-    MARCDUINO.println("#7\r");
+    send_command("#7");
   }
 }
 
@@ -155,11 +161,11 @@ void use_tool(const char* tool) {
   DEBUG("Use tool: " + String(tool));
 
   if (strstr(tool, "gripper") != NULL) {
-    MARCDUINO.println("#84\r");
+    send_command("#84");
   }
 
   if (strstr(tool, "interface") != NULL) {
-    MARCDUINO.println("#85\r");
+    send_command("#85");
   }
 }
 
@@ -167,35 +173,35 @@ void control_panel(const char* state, const char* panel) {
   DEBUG("Control panel: " + String(state) + " " + String(panel));
   
   if (String(panel) == "panels") {
-    String(state) == "open" ? MARCDUINO.println("#30,#62,#68,#74,#56,#58,#60\r") : MARCDUINO.println("#33,#63,#69,#75,#57,#59,#61\r");
+    String(state) == "open" ? send_command("#30,#62,#68,#74,#56,#58,#60") : send_command("#33,#63,#69,#75,#57,#59,#61");
   }
 
   if (String(panel) == "body panels") {
-    String(state) == "open" ? MARCDUINO.println("#62,#68,#74,#56\r") : MARCDUINO.println("#63,#69,#75,#57\r");
+    String(state) == "open" ? send_command("#62,#68,#74,#56") : send_command("#63,#69,#75,#57");
   }
 
   if (String(panel) == "dome panels") {
-    String(state) == "open" ? MARCDUINO.println("#30\r") : MARCDUINO.println("#33\r");
+    String(state) == "open" ? send_command("#30") : send_command("#33");
   }
 
   if (String(panel) == "pie panels") {
-    String(state) == "open" ? MARCDUINO.println("#46,#48,#50,#52\r") : MARCDUINO.println("#47,#49,#51,#53\r");
+    String(state) == "open" ? send_command("#46,#48,#50,#52") : send_command("#47,#49,#51,#53");
   }
 
   if (String(panel) == "tool doors") {
-    String(state) == "open" ? MARCDUINO.println("#62,#68\r") : MARCDUINO.println("#63,#69\r");
+    String(state) == "open" ? send_command("#62,#68") : send_command("#63,#69");
   }
 
   if (strstr(panel, "charge bay") != NULL) {
-    String(state) == "open" ? MARCDUINO.println("#74\r") : MARCDUINO.println("#75\r");
+    String(state) == "open" ? send_command("#74") : send_command("#75");
   }
 
   if (strstr(panel, "data port") != NULL) {
-    String(state) == "open" ? MARCDUINO.println("#56\r") : MARCDUINO.println("#57\r");
+    String(state) == "open" ? send_command("#56") : send_command("#57");
   }
 
   if (String(panel) == "utility arms") {
-    MARCDUINO.println("#82\r");
+    send_command("#82");
   }
 }
 

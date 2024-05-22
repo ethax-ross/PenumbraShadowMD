@@ -843,10 +843,6 @@ bool handleMarcduinoAction(const char* action)
           // knight rider music, holo/logics/psi vertical scan line sequence/MP cylon/dome seq/body seq
           handleMarcduinoAction("#88,#89,#90,#91,#92,#93");
         }
-        else if (startswith(cmd, "R2_LISTENING")) {
-          // knight rider effects on LDPL and CSL for 3s
-         sendPrintedDroidCommand("DP1\nCS2", "DP0\nCS0", 3000);        
-        }
         else if (startswith(cmd, "KITT")) {
           // knight rider effects on LDPL and CSL for 17s
           sendPrintedDroidCommand("DP1\nCS2", "DP0\nCS0", 17000);        
