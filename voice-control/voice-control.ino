@@ -14,9 +14,9 @@
 **/
 
 // Can only use Serial OR Serial1 (not both at the same time!)
-// #define SERIAL Serial
-#define SERIAL Serial1
-#define DEBUG Serial
+// #define MARCDUINO Serial
+#define MARCDUINO Serial1
+#define DEBUG_ENABLED false
 
 #include <Picovoice_EN.h>
 
@@ -36,9 +36,15 @@ static const float RHINO_SENSITIVITY = 0.5f;
 static const float RHINO_ENDPOINT_DURATION_SEC = 1.0f;
 static const bool RHINO_REQUIRE_ENDPOINT = true;
 
+void DEBUG(String message) {
+  if (DEBUG_ENABLED) {
+    Serial.println(message);
+  }
+}
+
 static void wake_word_callback(void) {
-    DEBUG.println("Wake word detected!");
-    SERIAL.println("R2_LISTENING\r");
+    DEBUG("Wake word detected!");
+    MARCDUINO.println("R2_LISTENING\r");
 }
 
 static void inference_callback(pv_inference_t *inference) {
@@ -47,19 +53,19 @@ static void inference_callback(pv_inference_t *inference) {
     char *sequence = nullptr;
     char *tool = nullptr;
 
-    DEBUG.println("{");
-    DEBUG.print("    is_understood : ");
-    DEBUG.println(inference->is_understood ? "true" : "false");
+    DEBUG("{");
+    DEBUG("    is_understood : ");
+    DEBUG(inference->is_understood ? "true" : "false");
     if (inference->is_understood) {
-      DEBUG.print("    intent : ");
-      DEBUG.println(inference->intent);
+      DEBUG("    intent : ");
+      DEBUG(inference->intent);
       if (inference->num_slots > 0) {
-        DEBUG.println("    slots : {");
+        DEBUG("    slots : {");
         for (int32_t i = 0; i < inference->num_slots; i++) {
-          DEBUG.print("        ");
-          DEBUG.print(inference->slots[i]);
-          DEBUG.print(" : ");
-          DEBUG.println(inference->values[i]);
+          DEBUG("        ");
+          DEBUG(inference->slots[i]);
+          DEBUG(" : ");
+          DEBUG(inference->values[i]);
 
           if (strcmp(inference->slots[i], "state") == 0) {
             state = (char *)malloc(strlen(inference->values[i]) + 1);
@@ -84,7 +90,7 @@ static void inference_callback(pv_inference_t *inference) {
           } 
         }
 
-        DEBUG.println("    }");
+        DEBUG("    }");
       }
 
       if(inference->intent == String("controlPanels")) {
@@ -100,109 +106,113 @@ static void inference_callback(pv_inference_t *inference) {
       }
     }
 
-    DEBUG.println("}\n");
+    DEBUG("}\n");
 
     pv_inference_delete(inference);
 }
 
 void play_sequence(const char* sequence) {
-  DEBUG.println("Sequence: " + String(sequence));
+  DEBUG("Sequence: " + String(sequence));
 
   if (String(sequence) == "run" || String(sequence) == "scream" || String(sequence) == "the empire are coming") {
-    Serial.println("#87,#79,#80,#78\r");
+    MARCDUINO.println("#87,#79,#80,#78\r");
+  }
+
+  if (strstr(sequence, "stop") != NULL) {
+    MARCDUINO.println("RESET\r");
   }
 
   if (strstr(sequence, "message") != NULL) {
-    Serial.println("#9\r");
+    MARCDUINO.println("#9\r");
   }
 
   if (String(sequence) == "cantina") {
-    Serial.println("#10\r");
+    MARCDUINO.println("#10\r");
   }
 
   if (String(sequence) == "marching ants") {
-    Serial.println("#19\r");
+    MARCDUINO.println("#19\r");
   }
 
   if (String(sequence) == "wave" || strstr(sequence, "bye") != NULL) {
-    Serial.println("#81,MP3=42\r");
+    MARCDUINO.println("#81,MP3=42\r");
   }
 
   if (String(sequence) == "knight rider" || strstr(sequence, "kitt") != NULL) {
-    Serial.println("KNIGHT_RIDER\r");
+    MARCDUINO.println("KNIGHT_RIDER\r");
   }
 
   if (String(sequence) == "disco" || String(sequence) == "party") {
-    Serial.println("#8\r");
+    MARCDUINO.println("#8\r");
   }
 
   if (String(sequence) == "smirk") {
-    Serial.println("#7\r");
+    MARCDUINO.println("#7\r");
   }
 }
 
 void use_tool(const char* tool) {
-  DEBUG.println("Use tool: " + String(tool));
+  DEBUG("Use tool: " + String(tool));
 
   if (strstr(tool, "gripper") != NULL) {
-    Serial.println("#84\r");
+    MARCDUINO.println("#84\r");
   }
 
   if (strstr(tool, "interface") != NULL) {
-    Serial.println("#85\r");
+    MARCDUINO.println("#85\r");
   }
 }
 
 void control_panel(const char* state, const char* panel) {
-  DEBUG.println("Control panel: " + String(state) + " " + String(panel));
+  DEBUG("Control panel: " + String(state) + " " + String(panel));
   
   if (String(panel) == "panels") {
-    String(state) == "open" ? Serial.println("#30,#62,#68,#74,#56,#58,#60\r") : Serial.println("#33,#63,#69,#75,#57,#59,#61\r");
+    String(state) == "open" ? MARCDUINO.println("#30,#62,#68,#74,#56,#58,#60\r") : MARCDUINO.println("#33,#63,#69,#75,#57,#59,#61\r");
   }
 
   if (String(panel) == "body panels") {
-    String(state) == "open" ? Serial.println("#62,#68,#74,#56\r") : Serial.println("#63,#69,#75,#57\r");
+    String(state) == "open" ? MARCDUINO.println("#62,#68,#74,#56\r") : MARCDUINO.println("#63,#69,#75,#57\r");
   }
 
   if (String(panel) == "dome panels") {
-    String(state) == "open" ? Serial.println("#30\r") : Serial.println("#33\r");
+    String(state) == "open" ? MARCDUINO.println("#30\r") : MARCDUINO.println("#33\r");
   }
 
   if (String(panel) == "pie panels") {
-    String(state) == "open" ? Serial.println("#46,#48,#50,#52\r") : Serial.println("#47,#49,#51,#53\r");
+    String(state) == "open" ? MARCDUINO.println("#46,#48,#50,#52\r") : MARCDUINO.println("#47,#49,#51,#53\r");
   }
 
   if (String(panel) == "tool doors") {
-    String(state) == "open" ? Serial.println("#62,#68\r") : Serial.println("#63,#69\r");
+    String(state) == "open" ? MARCDUINO.println("#62,#68\r") : MARCDUINO.println("#63,#69\r");
   }
 
   if (strstr(panel, "charge bay") != NULL) {
-    String(state) == "open" ? Serial.println("#74\r") : Serial.println("#75\r");
+    String(state) == "open" ? MARCDUINO.println("#74\r") : MARCDUINO.println("#75\r");
   }
 
   if (strstr(panel, "data port") != NULL) {
-    String(state) == "open" ? Serial.println("#56\r") : Serial.println("#57\r");
+    String(state) == "open" ? MARCDUINO.println("#56\r") : MARCDUINO.println("#57\r");
   }
 
   if (String(panel) == "utility arms") {
-    Serial.println("#82\r");
+    MARCDUINO.println("#82\r");
   }
 }
 
 static void print_error_message(char **message_stack, int32_t message_stack_depth) {
     for (int32_t i = 0; i < message_stack_depth; i++) {
-        DEBUG.println(message_stack[i]);
+        DEBUG(message_stack[i]);
     }
 }
 
 void setup() {
-    SERIAL.begin(9600);
-    while (!SERIAL);
+    MARCDUINO.begin(9600);
+    while (!MARCDUINO);
 
     pv_status_t status = pv_audio_rec_init();
     if (status != PV_STATUS_SUCCESS) {
-        DEBUG.print("Audio init failed with ");
-        DEBUG.println(pv_status_to_string(status));
+        DEBUG("Audio init failed with ");
+        DEBUG(pv_status_to_string(status));
         while (1);
     }
 
@@ -226,12 +236,12 @@ void setup() {
         inference_callback,
         &handle);
     if (status != PV_STATUS_SUCCESS) {
-        DEBUG.print("Picovoice init failed with ");
-        DEBUG.println(pv_status_to_string(status));
+        DEBUG("Picovoice init failed with ");
+        DEBUG(pv_status_to_string(status));
 
         error_status = pv_get_error_stack(&message_stack, &message_stack_depth);
         if (error_status != PV_STATUS_SUCCESS) {
-            DEBUG.println("Unable to get Porcupine error state");
+            DEBUG("Unable to get Porcupine error state");
             while (1);
         }
         print_error_message(message_stack, message_stack_depth);
@@ -243,12 +253,12 @@ void setup() {
     const char *rhino_context = NULL;
     status = pv_picovoice_context_info(handle, &rhino_context);
     if (status != PV_STATUS_SUCCESS) {
-        DEBUG.print("retrieving context info failed with");
-        DEBUG.println(pv_status_to_string(status));
+        DEBUG("retrieving context info failed with");
+        DEBUG(pv_status_to_string(status));
         while (1);
     }
-    DEBUG.println("Wake word: 'R2'");
-    DEBUG.println(rhino_context);
+    DEBUG("Wake word: 'R2'");
+    DEBUG(rhino_context);
 }
 
 void loop() {
@@ -256,15 +266,15 @@ void loop() {
     if (buffer) {
         const pv_status_t status = pv_picovoice_process(handle, buffer);
         if (status != PV_STATUS_SUCCESS) {
-            DEBUG.print("Picovoice process failed with ");
-            DEBUG.println(pv_status_to_string(status));
+            DEBUG("Picovoice process failed with ");
+            DEBUG(pv_status_to_string(status));
             char **message_stack = NULL;
             int32_t message_stack_depth = 0;
             pv_get_error_stack(
                 &message_stack,
                 &message_stack_depth);
             for (int32_t i = 0; i < message_stack_depth; i++) {
-                DEBUG.println(message_stack[i]);
+                DEBUG(message_stack[i]);
             }
             pv_free_error_stack(message_stack);
             while (1);

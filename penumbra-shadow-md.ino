@@ -845,7 +845,7 @@ bool handleMarcduinoAction(const char* action)
         }
         else if (startswith(cmd, "R2_LISTENING")) {
           // knight rider effects on LDPL and CSL for 3s
-          sendPrintedDroidCommand("DP1\nCS2", "DP0\nCS0", 3000);        
+         sendPrintedDroidCommand("DP1\nCS2", "DP0\nCS0", 3000);        
         }
         else if (startswith(cmd, "KITT")) {
           // knight rider effects on LDPL and CSL for 17s
