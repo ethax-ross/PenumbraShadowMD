@@ -44,8 +44,8 @@ void DEBUG(String message) {
 
 static void wake_word_callback(void) {
     DEBUG("Wake word detected!");
-    // turn on front holo for 'listening'
-    MARCDUINO.println("#96\r");
+    // no sound and turn on front holo for 'listening'
+    MARCDUINO.println("#11,#96\r");
 }
 
 static void inference_callback(pv_inference_t *inference) {
@@ -113,8 +113,8 @@ static void inference_callback(pv_inference_t *inference) {
 }
 
 void send_command(String cmd) {
-  // turn off front holo for 'stop listening' and send command as well
-  MARCDUINO.println("#97," + cmd + "\r");
+  // mid awake mode, turn off front holo for 'stop listening' and send command as well
+  MARCDUINO.println("#13,#97," + cmd + "\r");
 }
 
 void play_sequence(const char* sequence) {
