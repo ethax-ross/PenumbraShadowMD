@@ -1,16 +1,19 @@
 context:
   expressions:
     controlPanels:
-      - (@R2) $state:state (the, all) $panel:panel
+      - $state:state (the, all) $panel:panel
     playSequence:
-      - "[@R2, @play] (the) $sequence:sequence (sequence)"
+      - (@play) (the) $sequence:sequence (sequence)
     useTool:
-      - "@R2 (use, open) $tool:tool"
+      - (use, open) $tool:tool
   slots:
     state:
       - close
       - open
     panel:
+      - charge bay door
+      - data port door
+      - tool doors
       - dome panels
       - charge bay
       - data port
@@ -18,12 +21,20 @@ context:
       - pie panels
       - panels
     sequence:
+      - stop
+      - smirk
+      - party
+      - disco
+      - deliver the message
+      - kitt
+      - wave bye bye
+      - say bye
+      - say goodbye
       - run
       - the empire are coming
       - play the message
       - cantina
       - marching ants
-      - wiggle
       - wave
       - knight rider
       - scream
@@ -40,8 +51,3 @@ context:
       - initiate
       - play
       - start
-    R2:
-      - hey are too
-      - hey are two
-      - are too
-      - are two
