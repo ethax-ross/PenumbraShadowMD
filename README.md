@@ -2,6 +2,20 @@
 
 This is a modified Shadow sketch to work with the Penumbra controller.
 
+## Periscope
+
+The repo contains the default uppity spinner repository and the sketch for the ESP32 periscope to work with the uppity A/B/C logic sequences.
+
+In order to flash the periscope you need to:
+
+- Open the sketch in Arduino
+- Set to ESP32 Dev Module as the board
+- Hit upload
+- As soon as you see 'uploading' you need to:
+	- Press and hold the flash button
+	- Press and release the reset button
+	- Release the flash button
+
 ## Custom Sequences
 
 The folder `marcduino-body` contains a customised version of the v3 MD firmware that has sequences for the body panels and tools. These have been ported from [Tim Hebel's SHADOW MD fork](https://github.com/Eebel/SHADOW_MD_EEBEL).
