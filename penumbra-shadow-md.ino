@@ -364,13 +364,13 @@ MARCDUINO_ACTION(btnDown_MD, "#11")                       // Arrow Down         
 MARCDUINO_ACTION(btnLeft_MD, "#13")                       // Arrow Left           (Mid Awake)
 MARCDUINO_ACTION(btnRight_MD, "TOGGLE_HOLO_LIGHTS")       // Arrow Right          (Holo Lights On/Off)
 
-MARCDUINO_ACTION(btnUP_CIRCLE_MD, "#26")                  // Arrow Up + CROSS     (Volume Up)
-MARCDUINO_ACTION(btnDown_CIRCLE_MD, "#27")                // Arrow Down + CROSS   (Volume Down)
-MARCDUINO_ACTION(btnLeft_CIRCLE_MD, "PREV_SONG")          // Arrow Left + CROSS   (Previous Song)
-MARCDUINO_ACTION(btnRight_CIRCLE_MD, "NEXT_SONG")         // Arrow Right + CROSS  (Next Song)
+MARCDUINO_ACTION(btnUP_CIRCLE_MD, "#26")                  // Arrow Up + CIRCLE    (Volume Up)
+MARCDUINO_ACTION(btnDown_CIRCLE_MD, "#27")                // Arrow Down + CIRCLE  (Volume Down)
+MARCDUINO_ACTION(btnLeft_CIRCLE_MD, "PREV_SONG")          // Arrow Left + CIRCLE  (Previous Song)
+MARCDUINO_ACTION(btnRight_CIRCLE_MD, "NEXT_SONG")         // Arrow Right + CIRCLE (Next Song)
 
-MARCDUINO_ACTION(btnUP_CROSS_MD, "")      
-MARCDUINO_ACTION(btnDown_CROSS_MD, "RESET")               // Arrow Up + CIRCLE    (Reset - Everything Off/Closed)
+MARCDUINO_ACTION(btnUP_CROSS_MD, "")                   
+MARCDUINO_ACTION(btnDown_CROSS_MD, "RESET")               // Arrow Down + CROSS   (Reset - Everything Off/Closed)
 MARCDUINO_ACTION(btnLeft_CROSS_MD, "")
 MARCDUINO_ACTION(btnRight_CROSS_MD, "")
 
@@ -403,7 +403,7 @@ MARCDUINO_ACTION(FTbtnDown_CROSS_MD, "TOGGLE_DP_CBI")     // Arrow Down + CROSS 
 MARCDUINO_ACTION(FTbtnLeft_CROSS_MD, "#85")               // Arrow Left + CROSS   (Use Interface Arm)
 MARCDUINO_ACTION(FTbtnRight_CROSS_MD, "#84")              // Arrow Right + CROSS  (Use Gripper Arm)
 
-MARCDUINO_ACTION(FTbtnUP_PS_MD, "")                       // Arrow Up + PS
+MARCDUINO_ACTION(FTbtnUP_PS_MD, "#98")                    // Arrow Up + PS       (Periscope sequence 8)
 MARCDUINO_ACTION(FTbtnDown_PS_MD, "KITT")                 // Arrow Down + PS      (KITT)
 MARCDUINO_ACTION(FTbtnLeft_PS_MD, "")                     // Arrow Left + PS
 MARCDUINO_ACTION(FTbtnRight_PS_MD, "")                    // Arrow Right + PS
