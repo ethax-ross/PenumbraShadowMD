@@ -1,6 +1,6 @@
 # R2 Uppity Spinner
 
-This is the sketch for the R2 Uppity Spinner. It depends on the Reeltwo library. You can download the latest release of the Reeltwo library here: https://github.com/reeltwo/Reeltwo/releases
+This is the sketch for the R2 Uppity Spinner V2 (using TB9051FTG).
 
 [![Uppity Spinner](https://i.vimeocdn.com/video/1153816619-6fef8819cf32b562e0519537a46baed562bb51651010442a9ccdd9909c40952e-d_640x360)](https://vimeo.com/558277516)
 
@@ -9,6 +9,14 @@ Default baud rate is 9600 baud and the default I2C address is 32 (0x20). Both ca
 After installing your board you should run the `#PSC` calibration command.
 
 If you want a snappy hyper caffinated periscope you should use a 6V lifter motor. If you want a slower more deliberate periscope you should use a 12V lifter motor.
+
+## Libraries Used
+
+<ul>
+<li>https://github.com/reeltwo/Reeltwo</li>
+<li>https://github.com/adafruit/Adafruit_NeoPixel</li>
+<li>https://github.com/reeltwo/PCF8574</li>
+</ul>
 
 # Assembling R2 Uppity Spinner PCB Part 1
 [![Part1](https://img.youtube.com/vi/x4_3irdV4C8/hqdefault.jpg)](https://www.youtube.com/watch?v=x4_3irdV4C8)
@@ -62,12 +70,6 @@ Change system baudrate. Settings will be stored in EEPROM and take affect once t
 
 	#PBAUD9600               (set baud rate to 9600)
 
-`#PI2C`[address]
-Change system I2C address. Settings will be stored in EEPROM and take affect once the board is reset.
-*Examples*:
-
-	#PI2C128                 (set I2C address to 128)
-
 `#PR`
 Enable/disable rotary unit. This will reboot the board. The setting will persist between reboots.
 *Examples*:
@@ -90,13 +92,35 @@ Set lifter limit switch to normally open.
 Set rotary limit switch to normally closed. Default setting.
 *Examples*:
 
-	#PNCL (rotary limit normally closed)
+	#PNCR (rotary limit normally closed)
 
 `#PNOR`
 Set rotary limit switch to normally open.
 *Examples*:
 
 	#PNOR (rotary limit normally open)
+
+Multiple Lifters
+================
+For droids using multiple lifters you can assign each a different ID number. You can send a command to a specific lifter by prefixing the ID.
+
+`#PID`[id]
+Set ID # of this lifter. Default ID # is 0.
+*Examples*:
+
+	#PID1 (set lifter ID # to 1)
+	#PID2 (set lifter ID # to 2)
+
+### ID prefix
+For droids using multiple lifters you can assign each a different ID number. You can then send a command to a specific lifter.
+
+*Examples*:
+
+	:P1S1   (Lifter with ID #1 play sequence 1)
+	:PS1    (All lifter play sequence 1)
+	:P1L7   (Set sparkle light sequence on lifter with ID #1)
+	:PL7    (Set sparkle light sequence on all lifters)
+	#P1CONFIG (Show configuration of lifter #1)
 
 Lifter commands
 ===============
@@ -114,10 +138,11 @@ Would raise the periscope. Wait 2 seconds. Lower the periscope. Separately the c
 ### Play stored sequence
 
 `S`[number]:
-Sequences can be stored using #PS
+To play a stored sequence
 *Examples*:
 
-    #PS0:H:L0:P100,5:W2:P50,25:W2:P85,35:A90,20:W2:A270,20,100:W2:P100,100:L5:R50:W4:H
+    :PS1    (play sequence stored with #PS1)
+    :P1S1   (Lifter with ID #1 play sequence 1)
 
 ### Wait number of seconds
 `W`[R]seconds:
@@ -125,8 +150,8 @@ Wait for specified number of seconds. If 'R' is specified it will randomize the 
 *Examples*:
 
 	:PW2    (wait 2 seconds before executing next sequence)
-	:PWR    (wait random 1-6 seconds)
-	:PWR10  (wait random 1-10 seconds)
+	:PR     (wait random 1-6 seconds)
+	:PR10   (wait random 1-10 seconds)
 
 ### Light kit sequence
 `L`number:
@@ -226,3 +251,17 @@ Animate periscope continously rotate/lift.
 
 	:M,80,80,2,4  (animate lifter 80% power, rotatary random(20%-80%), minimum interval 2 seconds for a duration of 2+random(4) seconds )
 	:M,50,40,5,5  (animate lifter 50% power, rotatary random(20%-40%) power, 80% minimum interval 5 seconds for a duration of 5+5 seconds )
+
+Pololu Motors:
+==============
+### 12V
+<ul>
+<li>Lifter motor: https://www.pololu.com/product/4841</li>
+<li>Rotary motor: https://www.pololu.com/product/4847</li>
+</ul>
+
+### 6V
+<ul>
+<li>Lifter motor: https://www.pololu.com/product/4801</li>
+<li>Rotary motor: https://www.pololu.com/product/4807</li>
+</ul>
