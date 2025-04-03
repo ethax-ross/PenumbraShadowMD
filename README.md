@@ -16,6 +16,16 @@ In order to flash the periscope you need to:
 	- Press and release the reset button
 	- Release the flash button
 
+### Programming sequences
+
+Notes: speed needs to be between 65 (min lifter power) and 100!
+
+#PS0:H:P50:W2:P75,65:A90,25:W2:A270,20,100:W2:P100,100:L5:R50:W4:H65
+#PS1:H:L0:P100,65:W2:P50,65:W2:P85,75:A90,25:W2:A270,20,100:W2:P100:L5:R50:W4:H65
+#PS2:H:L6:P100:P50,65:P100:H65
+
+Enable debugging: #PDEBUG1
+
 ## Custom Sequences
 
 The folder `marcduino-body` contains a customised version of the v3 MD firmware that has sequences for the body panels and tools. These have been ported from [Tim Hebel's SHADOW MD fork](https://github.com/Eebel/SHADOW_MD_EEBEL).
@@ -80,6 +90,9 @@ Arrow Up + CROSS     (Utility Arms Open/Close)
 Arrow Down + CROSS   (Data Port and Charge Bay Open/Close)
 Arrow Left + CROSS   (Use Interface Arm)
 Arrow Right + CROSS  (Use Gripper Arm)
+
+Arrow Up + PS        (Periscope)
+Arrow Down + PS      (KITT)
 ```
 
 ## Building Instructions
