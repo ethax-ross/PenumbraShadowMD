@@ -388,7 +388,7 @@ MARCDUINO_ACTION(btnRight_L1_MD, "")
 // CONFIGURE: The DOME Navigation Controller Buttons
 //----------------------------------------------------
 
-MARCDUINO_ACTION(FTbtnUP_MD, "#87,#79,#80,#78")           // Arrow Up             (Scream, Wiggle Dome and Body)
+MARCDUINO_ACTION(FTbtnUP_MD, "#87,#79,#80,#78,#100")      // Arrow Up             (Scream, Wiggle Dome and Body, Periscope (up, down))
 MARCDUINO_ACTION(FTbtnDown_MD, "#81,MP3=42")              // Arrow Down           (Wave Bye, Sad Sound)
 MARCDUINO_ACTION(FTbtnLeft_MD, "#8")                      // Arrow Left           (Disco)
 MARCDUINO_ACTION(FTbtnRight_MD, "#10")                    // Arrow Right          (Cantina)
@@ -403,7 +403,7 @@ MARCDUINO_ACTION(FTbtnDown_CROSS_MD, "TOGGLE_DP_CBI")     // Arrow Down + CROSS 
 MARCDUINO_ACTION(FTbtnLeft_CROSS_MD, "#85")               // Arrow Left + CROSS   (Use Interface Arm)
 MARCDUINO_ACTION(FTbtnRight_CROSS_MD, "#84")              // Arrow Right + CROSS  (Use Gripper Arm)
 
-MARCDUINO_ACTION(FTbtnUP_PS_MD, "#98")                    // Arrow Up + PS       (Periscope sequence 8)
+MARCDUINO_ACTION(FTbtnUP_PS_MD, "#98")                    // Arrow Up + PS        (Periscope sequence)
 MARCDUINO_ACTION(FTbtnDown_PS_MD, "KITT")                 // Arrow Down + PS      (KITT)
 MARCDUINO_ACTION(FTbtnLeft_PS_MD, "")                     // Arrow Left + PS
 MARCDUINO_ACTION(FTbtnRight_PS_MD, "")                    // Arrow Right + PS

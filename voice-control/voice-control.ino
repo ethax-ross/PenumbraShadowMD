@@ -121,7 +121,7 @@ void play_sequence(const char* sequence) {
   DEBUG("Sequence: " + String(sequence));
 
   if (String(sequence) == "run" || String(sequence) == "scream" || String(sequence) == "the empire are coming") {
-    send_command("#87,#79,#80,#78");
+    send_command("#87,#79,#80,#78,#100");
   }
 
   if (strstr(sequence, "stop") != NULL) {
@@ -166,6 +166,10 @@ void use_tool(const char* tool) {
 
   if (strstr(tool, "interface") != NULL) {
     send_command("#85");
+  }
+
+  if (String(tool) == "periscope") {
+    send_command("#98");
   }
 }
 
