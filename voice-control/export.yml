@@ -5,7 +5,7 @@ context:
     playSequence:
       - (@play) (the) $sequence:sequence (sequence)
     useTool:
-      - (use, open) $tool:tool
+      - (use, raise, open) $tool:tool
   slots:
     state:
       - close
@@ -39,6 +39,7 @@ context:
       - knight rider
       - scream
     tool:
+      - periscope
       - gripper tool
       - interface tool
       - gripper arm
